@@ -240,7 +240,7 @@ function showPodium() {
   }).join('');
   $('rankingTable').innerHTML = ranking.length > 3 ? `<div class="ranking-heading"><span>PERINGKAT</span><span>KELOMPOK</span><span>SKOR</span></div>${ranking.slice(3).map((group, index) => `<div class="ranking-row"><span>${index + 4}</span><strong>${group.name}</strong><b>${group.score}</b></div>`).join('')}` : '';
   $('podiumConfetti').innerHTML = Array.from({ length: 20 }, (_, index) => `<i style="--i:${index}"></i>`).join('');
-  $('finalScore').textContent = ranking.reduce((total, group) => total + group.score, 0);
+  $('podiumFinalScore').textContent = ranking.reduce((total, group) => total + group.score, 0);
   show('podium');
 }
 function resetAll() {
@@ -261,7 +261,7 @@ function showSoloFinish() {
   $('finishEyebrow').textContent = 'SOLO MISSION SELESAI';
   $('finishTitle').textContent = 'Skor terbaikmu sudah tercatat!';
   $('finishMessage').textContent = 'Hebat! Kamu berhasil menyelesaikan tiga misi secara mandiri.';
-  $('finalScore').textContent = Math.round(memoryScore + wordScore + quizScore);
+  $('soloFinalScore').textContent = Math.round(memoryScore + wordScore + quizScore);
   show('finish');
 }
 
