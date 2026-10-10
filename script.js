@@ -52,6 +52,7 @@ const levels = [
 const WORDS = ['SUHU', 'CELSIUS', 'KELVIN', 'REAMUR', 'FAHRENHEIT', 'TERMOMETER', 'PEMUAIAN', 'BIMETAL', 'MUTLAK', 'RAKSA', 'ALKOHOL', 'DERAJAT'];
 const QUIZ_TIME = 30;
 const QUIZ_LIMIT = 2;
+const MAX_GROUPS = 8;
 const MEMORY_MAX_ATTEMPTS = 3;
 const backgroundMusic = new Audio(asset('audio/background.mp3'));
 backgroundMusic.loop = true;
@@ -178,13 +179,14 @@ function renderGroupInputs() {
 function updateGroupSetupState() {
   const validGroups = groups.filter((group) => group.name.trim()).length;
   $('startGame').disabled = validGroups < 2;
-  $('groupSetupNote').textContent = `${validGroups} kelompok siap · minimal 2, maksimal 6`;
+  $('addGroup').disabled = groups.length >= MAX_GROUPS;
+  $('groupSetupNote').textContent = `${validGroups} kelompok siap · minimal 2, maksimal ${MAX_GROUPS}`;
   updateGroupHud();
 }
 function startGroupGame() {
   const names = groups.map((group) => group.name.trim());
   if (names.filter(Boolean).length < 2) return;
-  groups = names.filter(Boolean).slice(0, 6).map((name) => ({ name, score: 0 }));
+  groups = names.filter(Boolean).slice(0, MAX_GROUPS).map((name) => ({ name, score: 0 }));
   currentGroupIndex = 0;
   score = 0;
   memoryScore = 0;
@@ -268,7 +270,7 @@ function showSoloFinish() {
 $('startMemory').onclick = () => show('memoryRules');
 $('chooseSolo').onclick = startSoloGame;
 $('chooseGroup').onclick = () => { gameMode = 'group'; renderGroupInputs(); show('groupSetup'); $('statusLabel').textContent = 'SIAP MEMBENTUK TIM'; };
-$('addGroup').onclick = () => { if (groups.length < 6) { groups.push({ name: `Kelompok ${groups.length + 1}`, score: 0 }); renderGroupInputs(); } };
+$('addGroup').onclick = () => { if (groups.length < MAX_GROUPS) { groups.push({ name: `Kelompok ${groups.length + 1}`, score: 0 }); renderGroupInputs(); } };
 $('startGame').onclick = startGroupGame;
 $('nextGroup').onclick = nextGroup;
 $('resetAll').onclick = resetAll;
